@@ -1,0 +1,3 @@
+ms-python.python
+mauve.terraform
+redhat.vscode-yaml
