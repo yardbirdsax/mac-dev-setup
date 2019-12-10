@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+     - vars/homebrew.yaml
+
+  roles:
+    - role: geerlingguy.homebrew
+
+  tasks:
+    - name: Say All Done!
+      osx_say:
+        msg: "ALL DONE!"
