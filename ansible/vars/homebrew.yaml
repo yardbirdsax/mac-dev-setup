@@ -1,7 +1,11 @@
+homebrew_taps:
+  - isen-ng/dotnet-sdk-versions
 homebrew_installed_packages:
   - git
   - terraform
+  - node
 homebrew_cask_apps:
   - firefox
   - lastpass
   - docker
+  - dotnet-sdk-2.2.400
