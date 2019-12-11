@@ -4,3 +4,4 @@ homebrew_installed_packages:
 homebrew_cask_apps:
   - firefox
   - lastpass
+  - docker
