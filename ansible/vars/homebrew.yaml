@@ -4,8 +4,13 @@ homebrew_installed_packages:
   - git
   - terraform
   - node
+  - awscli
+  - wget
+  - git-flow-avh
 homebrew_cask_apps:
   - firefox
   - lastpass
   - docker
   - dotnet-sdk-2.2.400
+  - sourcetree
+  - mysqlworkbench
