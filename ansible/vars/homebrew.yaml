@@ -1,5 +1,7 @@
 homebrew_taps:
   - isen-ng/dotnet-sdk-versions
+  - name: rhyeal/aws-rotate-iam-keys
+    url: https://github.com/rhyeal/aws-rotate-iam-keys
 homebrew_installed_packages:
   - git
   - terraform
@@ -7,6 +9,7 @@ homebrew_installed_packages:
   - awscli
   - wget
   - git-flow-avh
+  - aws-rotate-iam-keys
 homebrew_cask_apps:
   - firefox
   - lastpass
