@@ -4,3 +4,5 @@ redhat.vscode-yaml
 ms-azuretools.vscode-docker
 ms-vscode.csharp
 esbenp.prettier-vscode
+alefragnani.bookmarks
+msjsdiag.vscode-react-native
