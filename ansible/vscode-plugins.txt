@@ -6,3 +6,5 @@ ms-vscode.csharp
 esbenp.prettier-vscode
 alefragnani.bookmarks
 msjsdiag.vscode-react-native
+eamodio.gitlens
+kenhowardpdx.vscode-gist
