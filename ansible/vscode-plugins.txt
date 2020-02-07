@@ -8,3 +8,5 @@ alefragnani.bookmarks
 msjsdiag.vscode-react-native
 eamodio.gitlens
 kenhowardpdx.vscode-gist
+nikitakunevich.snippet-creator
+ms-azure-devops.azure-pipelines
