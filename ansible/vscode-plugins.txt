@@ -10,3 +10,4 @@ eamodio.gitlens
 kenhowardpdx.vscode-gist
 nikitakunevich.snippet-creator
 ms-azure-devops.azure-pipelines
+fudge.auto-using

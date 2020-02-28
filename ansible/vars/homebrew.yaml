@@ -4,12 +4,14 @@ homebrew_taps:
     url: https://github.com/rhyeal/aws-rotate-iam-keys
 homebrew_installed_packages:
   - git
-  - terraform
+#  - terraform
   - node
   - awscli
   - wget
   - git-flow-avh
   - aws-rotate-iam-keys
+  - azure-cli
+  - tfenv
 homebrew_cask_apps:
   - firefox
   - lastpass
