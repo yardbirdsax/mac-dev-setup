@@ -8,6 +8,10 @@
     - role: geerlingguy.homebrew
 
   tasks:
+    - name: "Add Kube_PS1 to bash profile"
+      lineinfile:
+        dest: ~{{ console_user | default(ansible_user) }}/.bash_profile
+        line: "source /usr/local/Cellar"
     - name: Say All Done!
       osx_say:
         msg: "ALL DONE!"

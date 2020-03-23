@@ -2,6 +2,7 @@ homebrew_taps:
   - isen-ng/dotnet-sdk-versions
   - name: rhyeal/aws-rotate-iam-keys
     url: https://github.com/rhyeal/aws-rotate-iam-keys
+  - azure/functions
 homebrew_installed_packages:
   - git
 #  - terraform
@@ -12,6 +13,11 @@ homebrew_installed_packages:
   - aws-rotate-iam-keys
   - azure-cli
   - tfenv
+  - azure-functions-core-tools
+  - kubernetes-cli
+  - helm
+  - kube-ps1
+  - kubectx
 homebrew_cask_apps:
   - firefox
   - lastpass
