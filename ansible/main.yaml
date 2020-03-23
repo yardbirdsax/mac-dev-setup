@@ -8,10 +8,16 @@
     - role: geerlingguy.homebrew
 
   tasks:
+    - name: "Create bash profile file"
+      file:
+        path: ~{{ console_user | default(ansible_user) }}/.bash_profile
+        state: touch
     - name: "Add Kube_PS1 to bash profile"
       lineinfile:
         dest: ~{{ console_user | default(ansible_user) }}/.bash_profile
-        line: "source /usr/local/Cellar"
+        line: "source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
+        regexp: source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
+        state: present
     - name: Say All Done!
       osx_say:
         msg: "ALL DONE!"

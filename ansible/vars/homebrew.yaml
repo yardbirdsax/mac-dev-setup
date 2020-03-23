@@ -16,7 +16,7 @@ homebrew_installed_packages:
   - azure-functions-core-tools
   - kubernetes-cli
   - helm
-  - kube-ps1
+  - https://raw.githubusercontent.com/jonmosco/homebrew-core/9ba7b79d35e2f4da04df045fcc2fb4d0889dfa47/Formula/kube-ps1.rb
   - kubectx
 homebrew_cask_apps:
   - firefox
