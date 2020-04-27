@@ -18,6 +18,7 @@ homebrew_installed_packages:
   - helm
   - https://raw.githubusercontent.com/jonmosco/homebrew-core/9ba7b79d35e2f4da04df045fcc2fb4d0889dfa47/Formula/kube-ps1.rb
   - kubectx
+  - aws-iam-authenticator
 homebrew_cask_apps:
   - firefox
   - lastpass
