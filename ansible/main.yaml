@@ -3,9 +3,18 @@
   connection: local
   vars_files:
      - vars/homebrew.yaml
+  vars:
+    - user_name: jfeierman
 
   roles:
     - role: geerlingguy.homebrew
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: "{{ user_name }}"
+          plugins:
+            - git
+            - kube-ps1
+            - vscode
 
   tasks:
     - name: "Create bash profile file"

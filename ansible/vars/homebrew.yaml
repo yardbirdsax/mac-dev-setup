@@ -5,7 +5,6 @@ homebrew_taps:
   - azure/functions
 homebrew_installed_packages:
   - git
-#  - terraform
   - node
   - awscli
   - wget

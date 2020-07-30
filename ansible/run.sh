@@ -11,7 +11,7 @@ echo "Installing xcode tools" && xcode-select --install
 echo "Installing Ansible" && brew install ansible && \
 
 # Install geerlingguy role
-echo "Installing geerlingguy Ansible role" && ansible-galaxy install -r requirements.yaml -p vendor --force && \
+echo "Installing Ansible roles" && ansible-galaxy install -r requirements.yaml -p vendor --force && \
 echo "Running Ansible playbook" && ansible-playbook -K main.yaml && \
 echo "Setting Git to use OSX keychain for credentials" && git config --global credential.helper osxkeychain && \
 echo "Installing VS Code plugins" && ./install-vscode-plugins.sh
