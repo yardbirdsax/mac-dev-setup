@@ -11,3 +11,4 @@ kenhowardpdx.vscode-gist
 nikitakunevich.snippet-creator
 ms-azure-devops.azure-pipelines
 fudge.auto-using
+cschleiden.vscode-github-actions
