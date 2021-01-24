@@ -3,6 +3,7 @@ homebrew_taps:
   - name: rhyeal/aws-rotate-iam-keys
     url: https://github.com/rhyeal/aws-rotate-iam-keys
   - azure/functions
+  - fluxcd/tap
 homebrew_installed_packages:
   - git
   - node
@@ -15,9 +16,10 @@ homebrew_installed_packages:
   - azure-functions-core-tools
   - kubernetes-cli
   - helm
-  - https://raw.githubusercontent.com/jonmosco/homebrew-core/9ba7b79d35e2f4da04df045fcc2fb4d0889dfa47/Formula/kube-ps1.rb
+  - kube-ps1
   - kubectx
   - aws-iam-authenticator
+  - flux
 homebrew_cask_apps:
   - firefox
   - lastpass
