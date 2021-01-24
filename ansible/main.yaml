@@ -19,11 +19,11 @@
   tasks:
     - name: "Create zsh profile file"
       file:
-        path: ~{{ console_user | default(ansible_user) }}/.zshrc
+        path: ~{{ console_user | default(user_name) }}/.zshrc
         state: touch
     - name: "Add Kube_PS1 to zsh profile"
       lineinfile:
-        dest: ~{{ console_user | default(ansible_user) }}/.zshrc
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
         regexp: source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
         state: present
