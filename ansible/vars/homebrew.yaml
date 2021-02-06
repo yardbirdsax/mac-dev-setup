@@ -1,3 +1,5 @@
+homebrew_prefix: /opt
+homebrew_install_path: "{{ homebrew_prefix }}/homebrew"
 homebrew_taps:
   - isen-ng/dotnet-sdk-versions
   - name: rhyeal/aws-rotate-iam-keys
@@ -5,6 +7,7 @@ homebrew_taps:
   - azure/functions
   - fluxcd/tap
 homebrew_installed_packages:
+  - go
   - git
   - node
   - awscli
@@ -23,7 +26,5 @@ homebrew_installed_packages:
 homebrew_cask_apps:
   - firefox
   - lastpass
-  - docker
-  - dotnet-sdk-2.2.400
   - sourcetree
   - mysqlworkbench
