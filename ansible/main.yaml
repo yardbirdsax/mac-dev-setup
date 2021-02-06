@@ -4,8 +4,7 @@
   vars_files:
      - vars/homebrew.yaml
   vars:
-    - user_name: jfeierman
-
+    - user_name: "{{ ansible_user_id }}"
   roles:
     - role: geerlingguy.homebrew
     - role: gantsign.oh-my-zsh
