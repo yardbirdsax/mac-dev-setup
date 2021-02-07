@@ -6,6 +6,10 @@
   vars:
     - user_name: "{{ ansible_user_id }}"
   tasks:
+    - name: Install Rosetta
+      shell:
+        cmd: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+      when: ansible_machine == 'arm64'
     - name: Install Homebrew packages
       import_role: 
         name: geerlingguy.homebrew
