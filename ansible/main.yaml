@@ -48,8 +48,8 @@
     - name: "Add Kube_PS1 to zsh profile"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
-        line: "source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
-        regexp: source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
+        line: "source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
+        regexp: source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
         state: present
     - name: Say All Done!
       osx_say:
