@@ -13,6 +13,24 @@
     - name: Install Homebrew packages
       import_role: 
         name: geerlingguy.homebrew
+    - name: Install Docker m1 preview
+      when: ansible_machine == 'arm64'
+      block:
+        - name: Setup OSX install environment
+          import_role:
+            name: osx
+        - name: Install Docker m1 preview
+          import_role:
+            name: './vendor/osx/osx/roles/installer'
+          vars:
+            app_name: Docker
+            app_url: https://desktop.docker.com/mac/m1preview/Docker-AppleSilicon-Preview7.dmg
+            installer_type: app
+            install_method: dmg
+            download_file_type: dmg
+        - name: Docker install cleanup
+          import_role:
+            name: './vendor/osx/osx/roles/cleanup'
     - name: Install and configure oh-my-zsh
       import_role:
         name: gantsign.oh-my-zsh

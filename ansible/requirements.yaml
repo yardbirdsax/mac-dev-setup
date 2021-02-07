@@ -2,3 +2,6 @@
 - name: gantsign.oh-my-zsh
   src: https://github.com/yardbirdsax/ansible-role-oh-my-zsh
   version: silicon-package-bug
+- name: osx
+  src: https://github.com/tensult/mac-setup-playbooks
+  version: master
