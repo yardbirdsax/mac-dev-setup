@@ -3,6 +3,7 @@
   connection: local
   vars_files:
      - vars/homebrew.yaml
+     - vars/vscode-plugins.yaml
   vars:
     - user_name: "{{ ansible_user_id }}"
   tasks:
@@ -42,6 +43,23 @@
         - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
+    - name: Install VS Code plugins
+      block:
+        - name: Set Code binary location
+          set_fact:
+            code_binary_path: "/usr/local/bin/{{ 'code-insiders' if ansible_machine == 'arm64' else 'code' }}"
+            code_app_path: "/Applications/Visual Studio Code{{ ' - Insiders' if ansible_machine == 'arm64' else '' }}.app/Contents/Resources/app/bin/code"
+        - name: Symlink Code binary
+          file:
+            src: "{{ code_app_path }}"
+            dest: "{{ code_binary_path }}"
+            state: link
+        - name: Install VS Code extensions
+          shell:
+            cmd: "{{ code_binary_path }} --install-extension {{ item.name | default(item) }}"
+          loop: "{{ vscode_plugins }}"
+      tags:
+        - vscode-ext
     - name: Install and configure oh-my-zsh
       import_role:
         name: gantsign.oh-my-zsh
