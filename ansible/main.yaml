@@ -14,7 +14,7 @@
     - name: Install Homebrew packages
       import_role: 
         name: geerlingguy.homebrew
-    - name: Install Docker m1 preview
+    - name: Install m1 specific apps
       when: ansible_machine == 'arm64'
       block:
         - name: Setup OSX install environment
