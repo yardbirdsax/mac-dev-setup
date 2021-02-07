@@ -28,7 +28,18 @@
             installer_type: app
             install_method: dmg
             download_file_type: dmg
-        - name: Docker install cleanup
+          tags:
+            - docker
+        - name: Install VS Code preview
+          import_role:
+            name: './vendor/osx/osx/roles/installer'
+          vars:
+            app_name: Visual Studio Code - Insiders
+            app_url: https://code.visualstudio.com/sha/download?build=insider&os=darwin-arm64
+            installer_type: app
+            install_method: zip
+            download_file_type: zip
+        - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
     - name: Install and configure oh-my-zsh
