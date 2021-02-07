@@ -5,17 +5,20 @@
      - vars/homebrew.yaml
   vars:
     - user_name: "{{ ansible_user_id }}"
-  roles:
-    - role: geerlingguy.homebrew
-    - role: gantsign.oh-my-zsh
-      users:
-        - username: "{{ user_name }}"
-          plugins:
-            - git
-            - kube-ps1
-            - vscode
-
   tasks:
+    - name: Install Homebrew packages
+      import_role: 
+        name: geerlingguy.homebrew
+    - name: Install and configure oh-my-zsh
+      import_role:
+        name: gantsign.oh-my-zsh
+      vars:  
+        users:
+          - username: "{{ user_name }}"
+            plugins:
+              - git
+              - kube-ps1
+              - vscode
     - name: "Create zsh profile file"
       file:
         path: ~{{ console_user | default(user_name) }}/.zshrc
