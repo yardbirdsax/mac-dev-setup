@@ -1,4 +1,4 @@
 - src: geerlingguy.homebrew
 - name: gantsign.oh-my-zsh
   src: https://github.com/yardbirdsax/ansible-role-oh-my-zsh
-  version: develop
+  version: silicon-package-bug
