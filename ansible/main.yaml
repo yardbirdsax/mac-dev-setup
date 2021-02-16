@@ -43,6 +43,9 @@
         - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
+        - name: Install tfenv from source
+          shell:
+            cmd: brew install --build-from-source tfenv
     - name: Install VS Code plugins
       block:
         - name: Set Code binary location

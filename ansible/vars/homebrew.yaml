@@ -16,7 +16,6 @@ homebrew_installed_packages:
   - git-flow-avh
   - aws-rotate-iam-keys
   - azure-cli
-  - tfenv
   - azure-functions-core-tools
   - yardbirdsax/homebrew-core/kubernetes-cli
   - helm
