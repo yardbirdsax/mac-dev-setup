@@ -67,11 +67,32 @@
         - vscode-ext
     - name: Configure Repo folders
       file:
-        type: directory
+        state: directory
         path: ~/repos
-        state: present
       tags:
         - folder
+    - name: Configure VS Code Snippets
+      block:
+        - name: Set Code support files location
+          set_fact:
+            code_app_support_path: "~/Library/Application Support/{{ 'Code - Insiders' if ansible_machine == 'arm64' else 'Code' }}"
+            snippets_repo_path: "~/repos/vscode-snippets"
+        - name: Check out Git repo
+          git:
+            repo: https://github.com/yardbirdsax/vscode-snippets
+            dest: "{{ snippets_repo_path }}"
+            update: true
+        - name: Delete existing folder
+          file:
+            path: "{{ code_app_support_path }}/User/snippets"
+            state: absent
+        - name: Link the folder
+          file:
+            state: link
+            src: "{{ snippets_repo_path }}"
+            dest: "{{ code_app_support_path }}/User/snippets"
+      tags:
+        - vscode-snippets
     - name: Install and configure oh-my-zsh
       import_role:
         name: gantsign.oh-my-zsh
