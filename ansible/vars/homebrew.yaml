@@ -23,6 +23,7 @@ homebrew_installed_packages:
   - kubectx
   - aws-iam-authenticator
   - flux
+  - yardbirdsax/homebrew-core/tfenv
 homebrew_cask_apps:
   - firefox
   - lastpass
