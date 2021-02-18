@@ -1,0 +1,17 @@
+terraform_versions:
+  - 0.12.29
+  - 0.13.6
+  - 0.14.6
+terraform_providers:
+  - name: terraform-provider-aws
+    repository: https://github.com/hashicorp/terraform-provider-aws
+    version: v3.28.0
+    build_command: |
+      cd tools \
+      && go get github.com/hashicorp/go-getter \
+      && go get -d github.com/pavius/impi/cmd/impi \
+      && cd .. \
+      && make tools \
+      && make build
+    install_dir: ~/.terraform.d/plugins/registry.terraform.io/hashicorp/aws/3.28.0/darwin_arm64
+    install_name: terraform-provider-aws_v3.28.0_x5

@@ -4,6 +4,7 @@
   vars_files:
      - vars/homebrew.yaml
      - vars/vscode-plugins.yaml
+     - vars/terraform.yaml
   vars:
     - user_name: "{{ ansible_user_id }}"
   tasks:
@@ -43,9 +44,10 @@
         - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
-        - name: Install tfenv from source
-          shell:
-            cmd: brew install --build-from-source tfenv
+        - name: Build and install Terraform
+          import_tasks: ./tasks/install-terraform.yaml
+          tags:
+            - terraform
     - name: Install VS Code plugins
       block:
         - name: Set Code binary location
@@ -69,10 +71,15 @@
       vars:  
         users:
           - username: "{{ user_name }}"
-            plugins:
-              - git
-              - kube-ps1
-              - vscode
+            oh_my_zsh:
+              plugins:
+                - git
+                - kube-ps1
+                - vscode
+                - docker
+                - docker-compose
+      tags:
+        - oh-my-zsh
     - name: "Create zsh profile file"
       file:
         path: ~{{ console_user | default(user_name) }}/.zshrc

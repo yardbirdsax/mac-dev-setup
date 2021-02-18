@@ -1,0 +1,41 @@
+---
+- name: Install Terraform
+  block:
+    - name: Checkout Git repo
+      git:
+        repo: https://github.com/hashicorp/terraform.git
+        dest: /tmp/terraform
+        update: true
+    - name: Build Terraform
+      shell:
+        cmd: |
+          git checkout v{{ item }}
+          mkdir -p {{ homebrew_install_path }}/Cellar/tfenv/2.2.0/versions/{{ item }}
+          go build -o {{ homebrew_install_path }}/Cellar/tfenv/2.2.0/versions/{{ item }}/terraform
+        chdir: /tmp/terraform
+      loop: "{{ terraform_versions }}"
+  always:
+    - name: Remove Git repo
+      file:
+        path: /tmp/terraform
+        state: absent
+- name: Install Terraform providers
+  block:
+    - name: "Checkout Git repo"
+      git:
+        repo: "{{ item.repository }}"
+        version: "{{ item.version }}"
+        dest: "/tmp/{{ item.name }}"
+        force: true
+      with_items: "{{ terraform_providers }}"
+    - name: "Build provider"
+      shell:
+        cmd: "{{ item.build_command }}"
+        chdir: "/tmp/{{ item.name }}"
+      with_items: "{{ terraform_providers }}"
+    - name: "Install provider"
+      shell:
+        cmd: "mv ~/go/bin/{{ item.name }} {{ item.install_dir }}/{{ item.install_name }}"
+      with_items: "{{ terraform_providers }}"
+  tags:
+    - terraform-provider
