@@ -65,6 +65,13 @@
           loop: "{{ vscode_plugins }}"
       tags:
         - vscode-ext
+    - name: Configure Repo folders
+      file:
+        type: directory
+        path: ~/repos
+        state: present
+      tags:
+        - folder
     - name: Install and configure oh-my-zsh
       import_role:
         name: gantsign.oh-my-zsh
