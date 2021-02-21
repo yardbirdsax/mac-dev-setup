@@ -39,3 +39,16 @@
       with_items: "{{ terraform_providers }}"
   tags:
     - terraform-provider
+- name: Install Terraform language server
+  block:
+    - name: Tap TerraformLS tap
+      homebrew_tap:
+        tap: hashicorp/tap
+    - name: Install Terraform LS
+      homebrew:
+        name:
+          - hashicorp/tap/terraform-ls
+        install_options:
+          - build-from-source
+  tags:
+    - terraform-ls
