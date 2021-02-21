@@ -35,7 +35,10 @@
       with_items: "{{ terraform_providers }}"
     - name: "Install provider"
       shell:
-        cmd: "mv ~/go/bin/{{ item.name }} {{ item.install_dir }}/{{ item.install_name }}"
+        cmd: |
+          mkdir -p {{ item.install_dir }}
+          mv ~/go/bin/{{ item.name }} {{ item.install_dir }}/{{ item.install_name }}
+
       with_items: "{{ terraform_providers }}"
   tags:
     - terraform-provider
