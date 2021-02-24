@@ -22,3 +22,10 @@ terraform_providers:
       GOARCH=arm64 make build
     install_dir: ~/.terraform.d/plugins/registry.terraform.io/cyrilgdn/postgresql/1.11.1/darwin_arm64
     install_name: terraform-provider-postgresql_v1.11.1_x5
+  - name: terraform-provider-elasticsearch
+    repository: https://github.com/phillbaker/terraform-provider-elasticsearch/
+    version: v1.5.3
+    build_command: | 
+      GOARCH=arm64 go build -o /Users/{{ ansible_user_id }}/go/bin/terraform-provider-elasticsearch
+    install_dir: ~/.terraform.d/plugins/registry.terraform.io/phillbaker/elasticsearch/1.5.3/darwin_arm64
+    install_name: terraform-provider-elasticsearch_v1.5.3_x5
