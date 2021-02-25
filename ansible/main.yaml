@@ -21,12 +21,14 @@
         - name: Setup OSX install environment
           import_role:
             name: osx
+          tags:
+            - always
         - name: Install Docker m1 preview
           import_role:
             name: './vendor/osx/osx/roles/installer'
           vars:
             app_name: Docker
-            app_url: https://desktop.docker.com/mac/m1preview/Docker-AppleSilicon-Preview7.dmg
+            app_url: https://desktop.docker.com/mac/stable/arm64/60984/Docker.dmg
             installer_type: app
             install_method: dmg
             download_file_type: dmg
@@ -44,6 +46,8 @@
         - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
+          tags:
+            - always
         - name: Build and install Terraform
           import_tasks: ./tasks/install-terraform.yaml
           tags:
