@@ -43,6 +43,17 @@
             installer_type: app
             install_method: zip
             download_file_type: zip
+        - name: Install Obsidian
+          import_role:
+            name: './vendor/osx/osx/roles/installer'
+          vars:
+            app_name: Obsidian
+            app_url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.11.0/Obsidian-0.11.0-universal.dmg
+            installer_type: app
+            install_method: dmg
+            download_file_type: dmg
+          tags:
+            - obsidian
         - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
