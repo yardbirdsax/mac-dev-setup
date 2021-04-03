@@ -24,8 +24,10 @@ homebrew_installed_packages:
   - aws-iam-authenticator
   - flux
   - yardbirdsax/homebrew-core/tfenv
+  - mockery
 homebrew_cask_apps:
   - firefox
   - lastpass
   - sourcetree
   - mysqlworkbench
+  - freedom
