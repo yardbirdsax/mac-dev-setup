@@ -15,6 +15,8 @@
     - name: Install Homebrew packages
       import_role: 
         name: geerlingguy.homebrew
+      tags:
+        - homebrew
     - name: Install m1 specific apps
       when: ansible_machine == 'arm64'
       block:
@@ -133,6 +135,15 @@
         line: "source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
         regexp: source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
         state: present
+    - name: Install terratest log parser
+      block:
+        - name: download terratest binary
+          get_url:
+            url: https://github.com/gruntwork-io/terratest/releases/download/v0.33.0/terratest_log_parser_darwin_amd64
+            dest: /usr/local/bin/terratest_log_parser
+            mode: u=rx,g=rx,o=rx
+      tags:
+        - terratest-log-parser
     - name: Say All Done!
       osx_say:
         msg: "ALL DONE!"
