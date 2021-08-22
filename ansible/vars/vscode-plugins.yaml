@@ -15,3 +15,4 @@ vscode_plugins:
   - cschleiden.vscode-github-actions
   - golang.go
   - ms-vscode-remote.remote-containers
+  - ms-vscode.wordcount
