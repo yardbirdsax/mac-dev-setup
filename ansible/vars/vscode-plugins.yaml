@@ -16,3 +16,4 @@ vscode_plugins:
   - golang.go
   - ms-vscode-remote.remote-containers
   - ms-vscode.wordcount
+  - stkb.rewrap
