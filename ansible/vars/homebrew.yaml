@@ -6,7 +6,6 @@ homebrew_taps:
     url: https://github.com/rhyeal/aws-rotate-iam-keys
   - azure/functions
   - fluxcd/tap
-  - yardbirdsax/homebrew-core
 homebrew_installed_packages:
   - go
   - git
@@ -17,13 +16,13 @@ homebrew_installed_packages:
   - aws-rotate-iam-keys
   - azure-cli
   - azure-functions-core-tools
-  - yardbirdsax/homebrew-core/kubernetes-cli
+  - kubernetes-cli
   - helm
   - kube-ps1
   - kubectx
   - aws-iam-authenticator
   - flux
-  - yardbirdsax/homebrew-core/tfenv
+  - tfenv
   - mockery
 homebrew_cask_apps:
   - firefox
