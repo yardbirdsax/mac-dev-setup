@@ -17,14 +17,35 @@
         name: geerlingguy.homebrew
       tags:
         - homebrew
+    - name: Setup OSX install environment
+      import_role:
+        name: osx
+      tags:
+        - always
+    - name: Install Obsidian
+      import_role:
+        name: './vendor/osx/osx/roles/installer'
+      vars:
+        app_name: Obsidian
+        app_url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.11.0/Obsidian-0.11.0-universal.dmg
+        installer_type: app
+        install_method: dmg
+        download_file_type: dmg
+      tags:
+        - obsidian  
+    - name: Install VS Code preview
+      import_role:
+        name: './vendor/osx/osx/roles/installer'
+      vars:
+        app_name: Visual Studio Code
+        app_url: https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal
+        installer_type: app
+        install_method: zip
+        download_file_type: zip  
+      when: ansible_machine != 'arm64'    
     - name: Install m1 specific apps
       when: ansible_machine == 'arm64'
       block:
-        - name: Setup OSX install environment
-          import_role:
-            name: osx
-          tags:
-            - always
         - name: Install Docker m1 preview
           import_role:
             name: './vendor/osx/osx/roles/installer'
@@ -45,17 +66,6 @@
             installer_type: app
             install_method: zip
             download_file_type: zip
-        - name: Install Obsidian
-          import_role:
-            name: './vendor/osx/osx/roles/installer'
-          vars:
-            app_name: Obsidian
-            app_url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.11.0/Obsidian-0.11.0-universal.dmg
-            installer_type: app
-            install_method: dmg
-            download_file_type: dmg
-          tags:
-            - obsidian
         - name: OSX install cleanup
           import_role:
             name: './vendor/osx/osx/roles/cleanup'
@@ -135,6 +145,17 @@
         line: "source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
         regexp: source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
         state: present
+    - name: "Add GOPATH to zsh profile"
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
+        line: "{{ item.line }}"
+        insertafter: "{{ item.after }}"
+        state: present
+      with_items:
+        - after: EOF
+          line: "export GOPATH=$HOME/go"
+        - after: "export GOPATH=$HOME/go"
+          line: "export PATH=$PATH:$GOPATH/bin"
     - name: Install terratest log parser
       block:
         - name: download terratest binary
