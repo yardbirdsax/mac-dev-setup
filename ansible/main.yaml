@@ -165,6 +165,10 @@
             mode: u=rx,g=rx,o=rx
       tags:
         - terratest-log-parser
+    - name: Install and configure Poetry
+      import_tasks: ./tasks/install-poetry.yaml
+      tags:
+        - poetry
     - name: Say All Done!
       osx_say:
         msg: "ALL DONE!"
