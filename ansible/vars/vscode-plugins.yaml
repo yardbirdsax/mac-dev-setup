@@ -17,3 +17,4 @@ vscode_plugins:
   - ms-vscode-remote.remote-containers
   - ms-vscode.wordcount
   - stkb.rewrap
+  - bierner.markdown-mermaid
