@@ -13,7 +13,7 @@
         cmd: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
       when: ansible_machine == 'arm64'
     - name: Install Homebrew packages
-      import_role: 
+      import_role:
         name: geerlingguy.homebrew
       tags:
         - homebrew
@@ -32,7 +32,7 @@
         install_method: dmg
         download_file_type: dmg
       tags:
-        - obsidian  
+        - obsidian
     - name: Install VS Code preview
       import_role:
         name: './vendor/osx/osx/roles/installer'
@@ -41,8 +41,8 @@
         app_url: https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal
         installer_type: app
         install_method: zip
-        download_file_type: zip  
-      when: ansible_machine != 'arm64'    
+        download_file_type: zip
+      when: ansible_machine != 'arm64'
     - name: Install m1 specific apps
       when: ansible_machine == 'arm64'
       block:
@@ -123,7 +123,7 @@
     - name: Install and configure oh-my-zsh
       import_role:
         name: gantsign.oh-my-zsh
-      vars:  
+      vars:
         users:
           - username: "{{ user_name }}"
             oh_my_zsh:
@@ -156,6 +156,16 @@
           line: "export GOPATH=$HOME/go"
         - after: "export GOPATH=$HOME/go"
           line: "export PATH=$PATH:$GOPATH/bin"
+    - name: "Configure ZSH key bindings"
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - line: "bindkey '[C' forward-word"
+        - line: "bindkey '[D' backward-word"
+      tags:
+        - zsh
     - name: Install terratest log parser
       block:
         - name: download terratest binary
