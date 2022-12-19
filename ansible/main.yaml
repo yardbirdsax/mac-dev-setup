@@ -127,6 +127,13 @@
         - line: "bindkey '[D' backward-word"
       tags:
         - zsh
+    - name: "Add asdf to .zshrc"
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
+        line: ". $(brew --prefix asdf)/libexec/asdf.sh"
+        state: present
+      tags:
+        - asdf
     - name: Install terratest log parser
       block:
         - name: download terratest binary

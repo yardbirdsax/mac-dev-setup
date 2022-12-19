@@ -24,6 +24,7 @@ homebrew_installed_packages:
   - flux
   - tfenv
   - mockery
+  - asdf
 homebrew_cask_apps:
   - visual-studio-code
   - docker
