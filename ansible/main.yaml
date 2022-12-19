@@ -14,7 +14,9 @@
       when: ansible_machine == 'arm64'
     - name: Install Homebrew packages
       import_role:
-        name: geerlingguy.homebrew
+        name: geerlingguy.mac.homebrew
+      environment:
+        PATH: '{{homebrew_install_path}}/bin:{{ ansible_env.PATH }}'
       tags:
         - homebrew
     - name: Setup OSX install environment

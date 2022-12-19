@@ -1,4 +1,6 @@
-- src: geerlingguy.homebrew
+collections:
+  - name: geerlingguy.mac
+roles:
 - name: gantsign.oh-my-zsh
   src: https://github.com/yardbirdsax/ansible-role-oh-my-zsh
   version: silicon-package-bug
