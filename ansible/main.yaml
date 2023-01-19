@@ -63,7 +63,7 @@
       block:
         - name: Set Code support files location
           set_fact:
-            code_app_support_path: "~/Library/Application Support/{{ 'Code - Insiders' if ansible_machine == 'arm64' else 'Code' }}"
+            code_app_support_path: "~/Library/Application Support/Code"
             snippets_repo_path: "~/repos/vscode-snippets"
         - name: Check out Git repo
           git:
@@ -100,11 +100,23 @@
       file:
         path: ~{{ console_user | default(user_name) }}/.zshrc
         state: touch
+    
+    - name: "Add Homebrew to PATH"
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
+        line: "{{ item.line }}"
+        insertafter: "{{ item.after }}"
+        state: present
+      with_items:
+        - after: EOF
+          line: "export PATH={{homebrew_install_path}}/bin:$PATH"
+      tags:
+        - homebrew_path
+        
     - name: "Add Kube_PS1 to zsh profile"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
-        line: "source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh"
-        regexp: source {{ homebrew_install_path }}/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
+        line: "source $(brew --prefix kube-ps1)/share/kube-ps1.sh"
         state: present
     - name: "Add GOPATH to zsh profile"
       lineinfile:
@@ -153,22 +165,14 @@
         - name: add Krew install path to PATH
           lineinfile:
             dest: ~{{ console_user | default(user_name) }}/.zshrc
-            line: export PATH="${KREW_ROOT:-$HOME}/.krew}/bin:$PATH"
+            line: export PATH="${KREW_ROOT:-$HOME}/.krew/bin:$PATH"
             state: present
 
-    - name: Install terratest log parser
-      block:
-        - name: download terratest binary
-          get_url:
-            url: https://github.com/gruntwork-io/terratest/releases/download/v0.33.0/terratest_log_parser_darwin_amd64
-            dest: /usr/local/bin/terratest_log_parser
-            mode: u=rx,g=rx,o=rx
-      tags:
-        - terratest-log-parser
     - name: Install and configure Poetry
       import_tasks: ./tasks/install-poetry.yaml
       tags:
         - poetry
+    
     - name: Say All Done!
       osx_say:
         msg: "ALL DONE!"

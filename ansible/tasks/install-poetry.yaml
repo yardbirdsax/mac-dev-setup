@@ -1,9 +1,15 @@
 ---
 - name: Install Poetry
-  shell: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+  shell: curl -sSL https://install.python-poetry.org | python3 -
 - name: Configure zsh completion
   shell: |
     mkdir -p $ZSH/plugins/poetry
-    $HOME/.poetry/bin/poetry completions zsh > $ZSH/plugins/poetry/_poetry
+    $HOME/.local/bin/poetry completions zsh > $ZSH/plugins/poetry/_poetry
   args:
     executable: zsh
+- name: Add Poetry install to PATH
+  lineinfile:
+    dest: ~{{ console_user | default(user_name) }}/.zshrc
+    insertafter: EOF
+    line: export PATH=$HOME/.local/bin:$PATH
+    state: present
