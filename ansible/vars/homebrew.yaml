@@ -27,6 +27,7 @@ homebrew_installed_packages:
   - asdf
   - python@3.8
   - python@3.9
+  - gh
 homebrew_cask_apps:
   - visual-studio-code
   - docker
