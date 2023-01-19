@@ -28,6 +28,7 @@ homebrew_installed_packages:
   - python@3.8
   - python@3.9
   - gh
+  - 7zip
 homebrew_cask_apps:
   - visual-studio-code
   - docker
