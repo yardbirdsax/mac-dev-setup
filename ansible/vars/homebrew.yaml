@@ -30,6 +30,7 @@ homebrew_installed_packages:
   - gh
   - 7zip
   - gum
+  - terragrunt
 homebrew_cask_apps:
   - visual-studio-code
   - docker
