@@ -1,0 +1,11 @@
+---
+- name: Setup Aliases
+  lineinfile:
+    dest: ~{{ console_user | default(user_name) }}/.zshrc
+    line: "alias {{ item.line }}"
+    insertafter: EOF
+    state: present
+  with_items:
+    - line: aws-profile='AWS_PROFILE=$(aws configure list-profiles | sort | gum choose --limit 1); export AWS_PROFILE'
+  tags:
+    - alias

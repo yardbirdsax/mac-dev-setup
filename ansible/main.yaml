@@ -184,6 +184,11 @@
       tags:
         - vscode
     
+    - name: Setup ZSH Aliases
+      import_tasks: ./tasks/setup-aliases.yaml
+      tags:
+        - aliases
+
     - name: Say All Done!
       osx_say:
         msg: "ALL DONE!"
