@@ -36,4 +36,5 @@ homebrew_cask_apps:
   - docker
   - firefox
   - slack
+  - tailscale
   - visual-studio-code
