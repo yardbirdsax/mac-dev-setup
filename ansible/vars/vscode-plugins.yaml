@@ -1,20 +1,19 @@
 vscode_plugins:
-  - ms-python.python
+  - alefragnani.bookmarks
+  - bierner.markdown-mermaid
+  - eamodio.gitlens
+  - esbenp.prettier-vscode
+  - fudge.auto-using
+  - golang.go
   - hashicorp.terraform
-  - redhat.vscode-yaml
+  - kenhowardpdx.vscode-gist
+  - ms-azure-devops.azure-pipelines
   - ms-azuretools.vscode-docker
   - ms-dotnettools.csharp
-  - esbenp.prettier-vscode
-  - alefragnani.bookmarks
-  - msjsdiag.vscode-react-native
-  - eamodio.gitlens
-  - kenhowardpdx.vscode-gist
-  - nikitakunevich.snippet-creator
-  - ms-azure-devops.azure-pipelines
-  - fudge.auto-using
-  - cschleiden.vscode-github-actions
-  - golang.go
+  - ms-python.python
   - ms-vscode-remote.remote-containers
   - ms-vscode.wordcount
+  - msjsdiag.vscode-react-native
+  - redhat.ansible
+  - redhat.vscode-yaml
   - stkb.rewrap
-  - bierner.markdown-mermaid
