@@ -24,17 +24,6 @@
         name: osx
       tags:
         - always
-    - name: Install Obsidian
-      import_role:
-        name: './vendor/osx/osx/roles/installer'
-      vars:
-        app_name: Obsidian
-        app_url: https://github.com/obsidianmd/obsidian-releases/releases/download/v0.11.0/Obsidian-0.11.0-universal.dmg
-        installer_type: app
-        install_method: dmg
-        download_file_type: dmg
-      tags:
-        - obsidian
 
     - name: Install VS Code plugins
       block:
@@ -101,7 +90,7 @@
       file:
         path: ~{{ console_user | default(user_name) }}/.zshrc
         state: touch
-    
+
     - name: "Add Homebrew to PATH"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
@@ -113,7 +102,7 @@
           line: "export PATH={{homebrew_install_path}}/bin:$PATH"
       tags:
         - homebrew_path
-        
+
     - name: "Add Kube_PS1 to zsh profile"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
@@ -169,11 +158,21 @@
             line: export PATH="${KREW_ROOT:-$HOME}/.krew/bin:$PATH"
             state: present
 
+    - name: Set default Python3 version
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.tool-versions
+        insertafter: EOF
+        line: python 3.12.0
+        regexp: python
+        state: present
+      tags:
+        - python
+
     - name: Install and configure Poetry
       import_tasks: ./tasks/install-poetry.yaml
       tags:
         - poetry
-    
+
     - name: Configure VS Code as default editor
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
@@ -183,11 +182,17 @@
         state: present
       tags:
         - vscode
-    
+
     - name: Setup ZSH Aliases
       import_tasks: ./tasks/setup-aliases.yaml
       tags:
         - aliases
+
+    - name: "Add TGSwitch to path"
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
+        line: export PATH="${HOME}/bin:${PATH}"
+        state: present
 
     - name: Say All Done!
       osx_say:
