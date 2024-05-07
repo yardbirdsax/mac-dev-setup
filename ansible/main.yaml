@@ -85,11 +85,13 @@
                 - docker
                 - docker-compose
       tags:
-        - oh-my-zsh
+        - zsh
     - name: "Create zsh profile file"
       file:
         path: ~{{ console_user | default(user_name) }}/.zshrc
         state: touch
+      tags:
+        - zsh
 
     - name: "Add Homebrew to PATH"
       lineinfile:
@@ -101,13 +103,16 @@
         - after: EOF
           line: "export PATH={{homebrew_install_path}}/bin:$PATH"
       tags:
-        - homebrew_path
+        - homebrew
+        - zsh
 
     - name: "Add Kube_PS1 to zsh profile"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "source $(brew --prefix kube-ps1)/share/kube-ps1.sh"
         state: present
+      tags:
+        - zsh
     - name: "Add GOPATH to zsh profile"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
@@ -119,6 +124,9 @@
           line: "export GOPATH=$HOME/go"
         - after: "export GOPATH=$HOME/go"
           line: "export PATH=$PATH:$GOPATH/bin"
+      tags:
+        - zsh
+        - go
     - name: "Configure ZSH key bindings"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
@@ -136,6 +144,7 @@
         state: present
       tags:
         - asdf
+        - zsh
     - name: install Krew
       tags:
         - krew
@@ -157,6 +166,8 @@
             dest: ~{{ console_user | default(user_name) }}/.zshrc
             line: export PATH="${KREW_ROOT:-$HOME}/.krew/bin:$PATH"
             state: present
+          tags:
+            - zsh
 
     - name: Set default Python3 version
       lineinfile:
@@ -167,6 +178,7 @@
         state: present
       tags:
         - python
+        - zsh
 
     - name: Install and configure Poetry
       import_tasks: ./tasks/install-poetry.yaml
@@ -182,17 +194,29 @@
         state: present
       tags:
         - vscode
+        - zsh
 
     - name: Setup ZSH Aliases
       import_tasks: ./tasks/setup-aliases.yaml
       tags:
         - aliases
+        - zsh
 
     - name: "Add TGSwitch to path"
       lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: export PATH="${HOME}/bin:${PATH}"
         state: present
+      tags:
+        - zsh
+
+    - name: "Add work specific profile file to .zshrc"
+      lineinfile:
+        dest: ~{{ console_user | default(user_name) }}/.zshrc
+        line: . "${HOME}/.zshrc_work"
+        state: present
+      tags:
+        - zsh
 
     - name: Say All Done!
       osx_say:
