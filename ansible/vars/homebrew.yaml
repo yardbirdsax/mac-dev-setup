@@ -22,7 +22,7 @@ homebrew_installed_packages:
   - kube-ps1
   - kubectx
   - aws-iam-authenticator
-  - flux
+  - fluxcd/tap/flux
   - tfenv
   - mockery
   - asdf

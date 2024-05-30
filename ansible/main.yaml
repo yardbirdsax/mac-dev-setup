@@ -1,78 +1,82 @@
----
-- hosts: localhost
+- name: "Configure"
+  hosts: localhost
   connection: local
-  vars_files:
-     - vars/homebrew.yaml
-     - vars/vscode-plugins.yaml
-     - vars/terraform.yaml
   vars:
-    - user_name: "{{ ansible_user_id }}"
+    user_name: "{{ ansible_user_id }}"
+  vars_files:
+    - vars/homebrew.yaml
+    - vars/vscode-plugins.yaml
+    - vars/terraform.yaml
   tasks:
     - name: Install Rosetta
-      shell:
+      ansible.builtin.command:
         cmd: /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+      changed_when: true
       when: ansible_machine == 'arm64'
     - name: Install Homebrew packages
-      import_role:
+      ansible.builtin.import_role:
         name: geerlingguy.mac.homebrew
       environment:
-        PATH: '{{homebrew_install_path}}/bin:{{ ansible_env.PATH }}'
+        PATH: '{{ homebrew_install_path }}/bin:{{ ansible_env.PATH }}'
       tags:
         - homebrew
     - name: Setup OSX install environment
-      import_role:
+      ansible.builtin.import_role:
         name: osx
       tags:
         - always
 
     - name: Install VS Code plugins
+      tags:
+        - vscode-ext
+        - vscode
       block:
         - name: Set Code binary location
-          set_fact:
+          ansible.builtin.set_fact:
             code_binary_path: "{{ homebrew_install_path }}/bin/code"
             code_app_path: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
         - name: Symlink Code binary
-          file:
+          ansible.builtin.file:
             src: "{{ code_app_path }}"
             dest: "{{ code_binary_path }}"
             state: link
         - name: Install VS Code extensions
-          shell:
+          ansible.builtin.command:
             cmd: "{{ code_binary_path }} --install-extension {{ item.name | default(item) }}"
           loop: "{{ vscode_plugins }}"
-      tags:
-        - vscode-ext
-        - vscode
+          changed_when: true
     - name: Configure Repo folders
-      file:
+      ansible.builtin.file:
         state: directory
+        mode: "0600"
         path: ~/repos
       tags:
         - folder
     - name: Configure VS Code Snippets
+      tags:
+        - vscode-snippets
       block:
         - name: Set Code support files location
-          set_fact:
+          ansible.builtin.set_fact:
             code_app_support_path: "~/Library/Application Support/Code"
             snippets_repo_path: "~/repos/vscode-snippets"
-        - name: Check out Git repo
-          git:
+        - name: Check out Git repo # noqa: latest
+          ansible.builtin.git:
             repo: https://github.com/yardbirdsax/vscode-snippets
             dest: "{{ snippets_repo_path }}"
             update: true
         - name: Delete existing folder
-          file:
+          ansible.builtin.file:
             path: "{{ code_app_support_path }}/User/snippets"
             state: absent
         - name: Link the folder
-          file:
+          ansible.builtin.file:
+            mode: "0600"
             state: link
             src: "{{ snippets_repo_path }}"
             dest: "{{ code_app_support_path }}/User/snippets"
-      tags:
-        - vscode-snippets
     - name: Install and configure oh-my-zsh
-      import_role:
+      ansible.builtin.import_role:
         name: gantsign.oh-my-zsh
       vars:
         users:
@@ -87,34 +91,35 @@
       tags:
         - zsh
     - name: "Create zsh profile file"
-      file:
+      ansible.builtin.file:
+        mode: "0600"
         path: ~{{ console_user | default(user_name) }}/.zshrc
         state: touch
       tags:
         - zsh
 
     - name: "Add Homebrew to PATH"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "{{ item.line }}"
         insertafter: "{{ item.after }}"
         state: present
       with_items:
         - after: EOF
-          line: "export PATH={{homebrew_install_path}}/bin:$PATH"
+          line: "export PATH={{ homebrew_install_path }}/bin:$PATH"
       tags:
         - homebrew
         - zsh
 
     - name: "Add Kube_PS1 to zsh profile"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "source $(brew --prefix kube-ps1)/share/kube-ps1.sh"
         state: present
       tags:
         - zsh
     - name: "Add GOPATH to zsh profile"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "{{ item.line }}"
         insertafter: "{{ item.after }}"
@@ -128,7 +133,7 @@
         - zsh
         - go
     - name: "Configure ZSH key bindings"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "{{ item.line }}"
         state: present
@@ -138,22 +143,22 @@
       tags:
         - zsh
     - name: "Add asdf to .zshrc"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: ". $(brew --prefix asdf)/libexec/asdf.sh"
         state: present
       tags:
         - asdf
         - zsh
-    - name: install Krew
+    - name: Install Krew
       tags:
         - krew
       block:
-        - name: download and install Krew
+        - name: Download and install Krew
           ansible.builtin.shell:
             cmd: |
               (
-                set -x; cd "$(mktemp -d)" &&
+                set -x -o pipefail; cd "$(mktemp -d)" &&
                 OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
                 ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
                 KREW="krew-${OS}_${ARCH}" &&
@@ -161,8 +166,9 @@
                 tar zxvf "${KREW}.tar.gz" &&
                 ./"${KREW}" install krew
               )
-        - name: add Krew install path to PATH
-          lineinfile:
+          changed_when: true
+        - name: Add Krew install path to PATH
+          ansible.builtin.lineinfile:
             dest: ~{{ console_user | default(user_name) }}/.zshrc
             line: export PATH="${KREW_ROOT:-$HOME}/.krew/bin:$PATH"
             state: present
@@ -170,7 +176,7 @@
             - zsh
 
     - name: Set default Python3 version
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.tool-versions
         insertafter: EOF
         line: python 3.12.0
@@ -180,13 +186,21 @@
         - python
         - zsh
 
+    - name: Install default tool versions
+      ansible.builtin.command:
+        cmd: asdf install
+      changed_when: true
+      tags:
+        - python
+        - tools
+
     - name: Install and configure Poetry
-      import_tasks: ./tasks/install-poetry.yaml
+      ansible.builtin.import_tasks: ./tasks/install-poetry.yaml
       tags:
         - poetry
 
     - name: Configure VS Code as default editor
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         insertafter: EOF
         line: export EDITOR="code --wait"
@@ -197,13 +211,13 @@
         - zsh
 
     - name: Setup ZSH Aliases
-      import_tasks: ./tasks/setup-aliases.yaml
+      ansible.builtin.import_tasks: ./tasks/setup-aliases.yaml
       tags:
         - aliases
         - zsh
 
     - name: "Add TGSwitch to path"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: export PATH="${HOME}/bin:${PATH}"
         state: present
@@ -211,7 +225,7 @@
         - zsh
 
     - name: "Add work specific profile file to .zshrc"
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: . "${HOME}/.zshrc_work"
         state: present

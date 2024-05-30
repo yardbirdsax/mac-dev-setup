@@ -1,6 +1,5 @@
----
 - name: Setup Aliases
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: ~{{ console_user | default(user_name) }}/.zshrc
     line: "alias {{ item.line }}"
     insertafter: EOF

@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "**/ansible/**/*.yaml": "ansible"
+    },
+    "files.trimTrailingWhitespace": true
+}

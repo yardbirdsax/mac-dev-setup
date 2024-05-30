@@ -1,14 +1,16 @@
----
 - name: Install Poetry
-  shell: curl -sSL https://install.python-poetry.org | sed -e 's|symlinks=False|symlinks=True|' | python3 -
+  ansible.builtin.shell:
+    cmd: set -o pipefail; curl -sSL https://install.python-poetry.org | sed -e 's|symlinks=False|symlinks=True|' | python3 -
+  changed_when: true
 - name: Configure zsh completion
-  shell: |
+  ansible.builtin.shell: |
     mkdir -p $ZSH/plugins/poetry
     $HOME/.local/bin/poetry completions zsh > $ZSH/plugins/poetry/_poetry
   args:
     executable: zsh
+  changed_when: true
 - name: Add Poetry install to PATH
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: ~{{ console_user | default(user_name) }}/.zshrc
     insertafter: EOF
     line: export PATH=$HOME/.local/bin:$PATH
