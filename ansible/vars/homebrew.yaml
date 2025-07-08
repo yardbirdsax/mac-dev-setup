@@ -26,8 +26,6 @@ homebrew_installed_packages:
   - tfenv
   - mockery
   - asdf
-  - python@3.8
-  - python@3.9
   - gh
   - 7zip
   - gum

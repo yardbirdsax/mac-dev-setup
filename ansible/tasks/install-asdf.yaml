@@ -1,0 +1,20 @@
+- name: "Add asdf to .zshrc"
+  ansible.builtin.lineinfile:
+    dest: ~{{ console_user | default(user_name) }}/.zshrc
+    line: export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+    state: present
+  tags:
+    - asdf
+    - zsh
+- name: Install Ansible ASDF plugin
+  ansible.builtin.command:
+    cmd: asdf plugin add ansible https://github.com/amrox/asdf-pyapp.git
+  changed_when: true
+  environment:
+    ASDF_PYAPP_INCLUDE_DEPS: "1"
+- name: Install Ansible-playbook ASDF plugin
+  ansible.builtin.command:
+    cmd: asdf plugin add ansible-playbook https://github.com/amrox/asdf-pyapp.git
+  changed_when: true
+  environment:
+    ASDF_PYAPP_INCLUDE_DEPS: "1"

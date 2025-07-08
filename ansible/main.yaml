@@ -48,7 +48,7 @@
     - name: Configure Repo folders
       ansible.builtin.file:
         state: directory
-        mode: "0600"
+        mode: "0700"
         path: ~/repos
       tags:
         - folder
@@ -142,14 +142,10 @@
         - line: "bindkey '[D' backward-word"
       tags:
         - zsh
-    - name: "Add asdf to .zshrc"
-      ansible.builtin.lineinfile:
-        dest: ~{{ console_user | default(user_name) }}/.zshrc
-        line: ". $(brew --prefix asdf)/libexec/asdf.sh"
-        state: present
+    - name: "Configure ASDF"
+      ansible.builtin.import_tasks: ./tasks/install-asdf.yaml
       tags:
         - asdf
-        - zsh
     - name: Install Krew
       tags:
         - krew

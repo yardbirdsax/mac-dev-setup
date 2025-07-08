@@ -2,5 +2,6 @@
     "files.associations": {
         "**/ansible/**/*.yaml": "ansible"
     },
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "ansible.python.interpreterPath": "/Users/joshuafeierman/.asdf/shims/python3.12"
 }
