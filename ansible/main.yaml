@@ -71,7 +71,7 @@
             state: absent
         - name: Link the folder
           ansible.builtin.file:
-            mode: "0600"
+            mode: "0700"
             state: link
             src: "{{ snippets_repo_path }}"
             dest: "{{ code_app_support_path }}/User/snippets"
@@ -98,7 +98,7 @@
       tags:
         - zsh
 
-    - name: "Add Homebrew to PATH"
+    - name: "Add extra PATHs"
       ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
         line: "{{ item.line }}"
@@ -107,6 +107,8 @@
       with_items:
         - after: EOF
           line: "export PATH={{ homebrew_install_path }}/bin:$PATH"
+        - after: EOF
+          line: "export PATH=$HOME/.local/bin:$PATH"
       tags:
         - homebrew
         - zsh

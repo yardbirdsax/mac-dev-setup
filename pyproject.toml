@@ -1,0 +1,21 @@
+[project]
+name = "mac-dev-setup"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Josh Feierman",email = "josh@sqljosh.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ansible = "^11.7.0"
+ansible-lint = "^25.6.1"
+
