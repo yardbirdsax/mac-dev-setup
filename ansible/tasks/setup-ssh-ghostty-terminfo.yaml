@@ -1,0 +1,21 @@
+- name: Add ghostty terminfo SSH wrapper function to .zshrc
+  ansible.builtin.blockinfile:
+    dest: ~{{ console_user | default(user_name) }}/.zshrc
+    insertafter: EOF
+    marker: "# {mark} ghostty-terminfo-ssh-wrapper"
+    block: |
+      # Auto-bootstrap ghostty terminfo on remote hosts (cached per host)
+      ssh() {
+        if [[ "$TERM" == "xterm-ghostty" ]]; then
+          local cache="${HOME}/.cache/ghostty-terminfo-hosts"
+          local host="${@: -1}"
+          if ! grep -qxF "$host" "$cache" 2>/dev/null; then
+            infocmp xterm-ghostty | command ssh "$@" 'mkdir -p ~/.terminfo && tic -x -o ~/.terminfo -' 2>/dev/null && \
+              { mkdir -p "${HOME}/.cache"; echo "$host" >> "$cache"; }
+          fi
+        fi
+        command ssh "$@"
+      }
+    state: present
+  tags:
+    - zsh

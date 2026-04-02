@@ -209,6 +209,11 @@
         - aliases
         - zsh
 
+    - name: Setup SSH ghostty terminfo
+      ansible.builtin.import_tasks: ./tasks/setup-ssh-ghostty-terminfo.yaml
+      tags:
+        - zsh
+
     - name: "Add TGSwitch to path"
       ansible.builtin.lineinfile:
         dest: ~{{ console_user | default(user_name) }}/.zshrc
